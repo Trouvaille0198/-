@@ -2,8 +2,6 @@
 
 > 本项目用到的非自带库有：requests，pandas，numpy，xpinyin，lxml
 
-<img src="http://image.trouvaille0198.top/image-20210204212130209.png" alt="image-20210204212130209" style="zoom:67%;" />
-
 ## 简介
 
 - 数据来源：链家二手房
@@ -24,6 +22,14 @@ self.column = [
     - 使用 tkinter 构建 GUI 界面
     - 使用 xpinyin 将中文转换为拼音
 - 数据截图
+
+<img src="http://image.trouvaille0198.top/image-20210205094644595.png" alt="image-20210205094644595" style="zoom:67%;" />
+
+<img src="http://image.trouvaille0198.top/image-20210205094702637.png" alt="image-20210205094702637" style="zoom:67%;" />
+
+- 程序截图
+
+<img src="http://image.trouvaille0198.top/image-20210204212130209.png" alt="image-20210204212130209" style="zoom:67%;" />
 
 ## 实现的功能
 
