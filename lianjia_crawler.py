@@ -11,7 +11,7 @@ p = Pinyin()
 
 
 class LianjiaCrawler():
-    def __init__(self, city, location, page, path='.'):
+    def __init__(self, city, location, page, path=''):
         self.city = city
         self.location = location
         self.page = page
@@ -82,13 +82,15 @@ class LianjiaCrawler():
         '''
         url_list = []
         for i in range(1, int(self.page) + 1):
-            # print('正在获取第{}页房源url'.format(str(i)))
+            print('正在获取第{}页房源url'.format(str(i)))
             url = self.organize_url(i)
             text = self.get_one_page_text(url)
             if text:
                 html = self.switch_to_xpath(text)
                 url_list.extend(self.get_house_list(html))
                 time.sleep(0.5)
+            else:
+                print('第{}页房源爬取出现错误！'.format(str(i)))
         return url_list
 
     def parse_house_info(self, url):
@@ -206,14 +208,14 @@ class LianjiaCrawler():
         community = self.is_null(community)[0]
 
         total_price = self.is_null(total_price)[0]
-        if total_price.isdigit():
-            total_price = int(total_price)
+        if total_price.replace('.', '', 1).isdigit():
+            total_price = float(total_price)
         else:
             total_price = np.nan
 
         average_price = self.is_null(average_price)[0]
-        if average_price.isdigit():
-            average_price = int(average_price)
+        if average_price.replace('.', '', 1).isdigit():
+            average_price = float(average_price)
         else:
             average_price = np.nan
 
@@ -288,10 +290,13 @@ class LianjiaCrawler():
         for url in url_list:
             print('正在获取第{}条房源信息'.format(url_list.index(url) + 1))
             one_piece = self.parse_house_info(url)
-            if not one_piece:
+            if one_piece:
                 house_list.append(one_piece)
             # time.sleep(0.5)
-        print('完成所有爬取~')
+        if house_list:
+            print('完成所有爬取~')
+        else:
+            print('爬取失败，请检查输入的参数是否有误')
         return house_list
 
     def switch_to_pandas(self, house_list):
@@ -310,3 +315,11 @@ class LianjiaCrawler():
         df.to_csv(self.path + '/{}房源.csv'.format(self.location),
                   index=False,
                   encoding="utf-8-sig")
+        print('已保存至' + self.path + '\\{}房源.csv'.format(self.location))
+
+    def gogogo(self):
+        url_list = self.get_whole_house_url()
+        house_list = self.get_whole_house_info(url_list)
+        if house_list:
+            df = self.switch_to_pandas(house_list)
+            self.save_to_path(df)
