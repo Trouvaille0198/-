@@ -101,9 +101,11 @@ class CrawlPage():
         house_list = []
         for url in url_list:
             tip = '正在获取第{}条房源信息\n'.format(url_list.index(url) + 1)
+            print(tip)
             self.message_text.insert('insert', tip)
             one_piece = crawler.parse_house_info(url)
-            house_list.append(one_piece)
+            if one_piece:
+                house_list.append(one_piece)
             # time.sleep(0.5)
         self.message_text.insert('insert', '完成所有爬取~\n')
         df = crawler.switch_to_pandas(house_list)
